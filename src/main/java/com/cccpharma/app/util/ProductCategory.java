@@ -1,4 +1,4 @@
-package com.cccpharma.util;
+package com.cccpharma.app.util;
 
 public enum ProductCategory {
 	MEDICINE("Medicamento"),

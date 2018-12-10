@@ -1,4 +1,4 @@
-package com.cccpharma.model;
+package com.cccpharma.app.model;
 
 import java.io.Serializable;
 
