@@ -27,7 +27,7 @@ public class Product implements Serializable {
 	@Column(name = "name", nullable = false)
 	private String name;
 	
-	@Column(name = "bar_code", unique = true, nullable = false)
+	@Column(name = "bar_code", nullable = false)
 	private String barCode;
 	
 	@Column(name = "manufacturer")
