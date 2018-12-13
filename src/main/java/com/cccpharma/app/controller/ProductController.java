@@ -65,6 +65,7 @@ public class ProductController {
 			savedProduct.setManufacturer(product.getManufacturer());
 			savedProduct.setStatus(product.getStatus());
 			savedProduct.setCategory(product.getCategory());
+			savedProduct.setPrice(product.getPrice());
 			
 			Product updatedProduct = productRepository.save(savedProduct);
 			return new ResponseEntity<Product>(updatedProduct, HttpStatus.OK);
