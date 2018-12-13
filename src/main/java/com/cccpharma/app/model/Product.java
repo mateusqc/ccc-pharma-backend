@@ -18,14 +18,19 @@ public class Product implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private long id;
+	
 	@Column(name = "name")
 	private String name;
+	
 	@Column(name = "bar_code")
 	private String barCode;
+	
 	@Column(name = "manufacturer")
 	private String manufacturer;
+	
 	@Column(name = "status")
 	private String status;
+	
 	@Column(name = "category")
 	private String category;
 	

@@ -10,20 +10,24 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Userr")
-public class Userr implements Serializable{
+@Table(name = "user_data")
+public class User implements Serializable{
 	private static final long serialVersionUID = 4262619552581632044L;
 	
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private long id;
+	
 	@Column(name = "name")
 	private String name;
+	
 	@Column(name = "email")
 	private String email;
+	
 	@Column(name = "password")
 	private String password;
+	
 	public long getId() {
 		return id;
 	}
@@ -48,9 +52,6 @@ public class Userr implements Serializable{
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -69,7 +70,7 @@ public class Userr implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Userr other = (Userr) obj;
+		User other = (User) obj;
 		if (email == null) {
 			if (other.email != null)
 				return false;
@@ -91,8 +92,7 @@ public class Userr implements Serializable{
 	}
 	@Override
 	public String toString() {
-		return "Userr [id=" + id + ", name=" + name + ", email=" + email + ", password=" + password + "]";
+		return "User [id=" + id + ", name=" + name + ", email=" + email + ", password=" + password + "]";
 	}
-	
 	
 }
