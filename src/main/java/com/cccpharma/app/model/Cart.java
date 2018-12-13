@@ -27,11 +27,9 @@ public class Cart implements Serializable{
 	@JoinColumn(name = "user_cart_owner", nullable = false)
 	private User user;
 	
-	@OneToMany(fetch = FetchType.LAZY,
-			cascade = CascadeType.ALL,
-			targetEntity = ProductCart.class,
-			mappedBy = "cart")
-	private List<ProductCart> productsCart;
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "products")
+	private List<Product> products;
 	
 	public long getId() {
 		return id;
@@ -45,18 +43,18 @@ public class Cart implements Serializable{
 	public void setUser(User user) {
 		this.user = user;
 	}
-	public List<ProductCart> getProductsCart() {
-		return productsCart;
+	public List<Product> getProducts() {
+		return products;
 	}
-	public void setProductsCart(List<ProductCart> productsCart) {
-		this.productsCart = productsCart;
+	public void setProducts(List<Product> products) {
+		this.products = products;
 	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + (int) (id ^ (id >>> 32));
-		result = prime * result + ((productsCart == null) ? 0 : productsCart.hashCode());
+		result = prime * result + ((products == null) ? 0 : products.hashCode());
 		result = prime * result + ((user == null) ? 0 : user.hashCode());
 		return result;
 	}
@@ -71,10 +69,10 @@ public class Cart implements Serializable{
 		Cart other = (Cart) obj;
 		if (id != other.id)
 			return false;
-		if (productsCart == null) {
-			if (other.productsCart != null)
+		if (products == null) {
+			if (other.products != null)
 				return false;
-		} else if (!productsCart.equals(other.productsCart))
+		} else if (!products.equals(other.products))
 			return false;
 		if (user == null) {
 			if (other.user != null)
@@ -85,7 +83,7 @@ public class Cart implements Serializable{
 	}
 	@Override
 	public String toString() {
-		return "Cart [id=" + id + ", user=" + user + ", productsCart=" + productsCart + "]";
+		return "Cart [id=" + id + ", user=" + user + ", products=" + products + "]";
 	}	
 
 }

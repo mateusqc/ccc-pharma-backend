@@ -4,10 +4,15 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import com.cccpharma.app.util.ProductCategory;
+import com.cccpharma.app.util.ProductStatus;
 
 @Entity
 @Table(name = "product")
@@ -19,20 +24,25 @@ public class Product implements Serializable {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private long id;
 	
-	@Column(name = "name")
+	@Column(name = "name", nullable = false)
 	private String name;
 	
-	@Column(name = "bar_code")
+	@Column(name = "bar_code", nullable = false)
 	private String barCode;
 	
 	@Column(name = "manufacturer")
 	private String manufacturer;
 	
-	@Column(name = "status")
-	private String status;
+	@Enumerated(EnumType.STRING)
+	@Column(name = "status", nullable = false)
+	private ProductStatus status;
 	
-	@Column(name = "category")
-	private String category;
+	@Enumerated(EnumType.STRING)
+	@Column(name = "category", nullable = false)
+	private ProductCategory category;
+	
+	@Column(name = "price", nullable = false)
+	private double price;
 	
 	public Product() {
 		
@@ -70,26 +80,34 @@ public class Product implements Serializable {
 		this.manufacturer = manufacturer;
 	}
 	
-	public String getStatus() {
+	public ProductStatus getStatus() {
 		return status;
 	}
-	
-	public void setStatus(String status) {
+
+	public void setStatus(ProductStatus status) {
 		this.status = status;
 	}
-	
-	public String getCategory() {
+
+	public ProductCategory getCategory() {
 		return category;
 	}
-	
-	public void setCategory(String category) {
+
+	public void setCategory(ProductCategory category) {
 		this.category = category;
 	}
-	
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
+
 	@Override
 	public String toString() {
 		return "Product [id=" + id + ", name=" + name + ", barCode=" + barCode + ", manufacturer=" + manufacturer
-				+ ", status=" + status + ", category=" + category + "]";
+				+ ", status=" + status + ", category=" + category + ", price=" + price + "]";
 	}
 
 	@Override
@@ -97,7 +115,10 @@ public class Product implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((barCode == null) ? 0 : barCode.hashCode());
+		result = prime * result + ((category == null) ? 0 : category.hashCode());
 		result = prime * result + (int) (id ^ (id >>> 32));
+		result = prime * result + ((manufacturer == null) ? 0 : manufacturer.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
 	}
 
@@ -115,7 +136,19 @@ public class Product implements Serializable {
 				return false;
 		} else if (!barCode.equals(other.barCode))
 			return false;
+		if (category != other.category)
+			return false;
 		if (id != other.id)
+			return false;
+		if (manufacturer == null) {
+			if (other.manufacturer != null)
+				return false;
+		} else if (!manufacturer.equals(other.manufacturer))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
 			return false;
 		return true;
 	}

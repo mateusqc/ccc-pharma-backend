@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cccpharma.app.model.Product;
 import com.cccpharma.app.repository.ProductRepository;
+import com.cccpharma.app.util.ProductCategory;
 
 @RestController
 //@RequestMapping("/api")
@@ -53,6 +54,17 @@ public class ProductController {
 				new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 	
+	@GetMapping("/products/category/{category}")
+	public List<Product> getProductsCategory(@PathVariable("category") ProductCategory category) {
+		System.out.println("GET ALL PRODUCTS FROM A CATHEGORY...");
+		
+		List<Product> list = new ArrayList<>();
+		Iterable<Product> products = productRepository.findByCategory(category);
+		
+		products.forEach(list::add);
+		return list;
+	}
+	
 	@PutMapping("/products/{id}")
 	public ResponseEntity<Product> updateProduct(@PathVariable("id") Long id, @RequestBody Product product) {
 		System.out.println("UPDATING PRODUCT " + id + "...");
@@ -65,6 +77,7 @@ public class ProductController {
 			savedProduct.setManufacturer(product.getManufacturer());
 			savedProduct.setStatus(product.getStatus());
 			savedProduct.setCategory(product.getCategory());
+			savedProduct.setPrice(product.getPrice());
 			
 			Product updatedProduct = productRepository.save(savedProduct);
 			return new ResponseEntity<Product>(updatedProduct, HttpStatus.OK);

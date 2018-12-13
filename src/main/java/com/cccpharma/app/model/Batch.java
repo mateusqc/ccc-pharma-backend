@@ -27,11 +27,11 @@ public class Batch  implements Serializable {
 	@JoinColumn(name = "product", nullable = false)
 	private Product product;
 	
-	@Column(name = "quantity")
+	@Column(name = "quantity", nullable = false)
 	private int quantity;
 	
-	@Column(name = "shelfLife")
-	private Date shelfLife;
+	@Column(name = "expiration_date")
+	private Date expirationDate;
 	
 	public long getId() {
 		return id;
@@ -52,10 +52,10 @@ public class Batch  implements Serializable {
 		this.quantity = quantity;
 	}
 	public Date getShelfLife() {
-		return shelfLife;
+		return expirationDate;
 	}
 	public void setShelfLife(Date shelfLife) {
-		this.shelfLife = shelfLife;
+		this.expirationDate = shelfLife;
 	}
 	public static long getSerialversionuid() {
 		return serialVersionUID;
@@ -67,7 +67,7 @@ public class Batch  implements Serializable {
 		result = prime * result + (int) (id ^ (id >>> 32));
 		result = prime * result + ((product == null) ? 0 : product.hashCode());
 		result = prime * result + quantity;
-		result = prime * result + ((shelfLife == null) ? 0 : shelfLife.hashCode());
+		result = prime * result + ((expirationDate == null) ? 0 : expirationDate.hashCode());
 		return result;
 	}
 	@Override
@@ -88,16 +88,17 @@ public class Batch  implements Serializable {
 			return false;
 		if (quantity != other.quantity)
 			return false;
-		if (shelfLife == null) {
-			if (other.shelfLife != null)
+		if (expirationDate == null) {
+			if (other.expirationDate != null)
 				return false;
-		} else if (!shelfLife.equals(other.shelfLife))
+		} else if (!expirationDate.equals(other.expirationDate))
 			return false;
 		return true;
 	}
 	@Override
 	public String toString() {
-		return "Batch [id=" + id + ", product=" + product + ", quantity=" + quantity + ", shelfLife=" + shelfLife + "]";
+		return "Batch [id=" + id + ", product=" + product + ", quantity=" + quantity + ", expirationDate="
+				+ expirationDate + "]";
 	}
 
 }
