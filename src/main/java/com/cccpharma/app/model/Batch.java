@@ -11,7 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -23,7 +23,7 @@ public class Batch  implements Serializable {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private long id;
 	
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "product", nullable = false)
 	private Product product;
 	

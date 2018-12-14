@@ -1,6 +1,7 @@
 package com.cccpharma.app.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +10,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.cccpharma.app.util.ProductCategory;
@@ -43,6 +45,9 @@ public class Product implements Serializable {
 	
 	@Column(name = "price", nullable = false)
 	private double price;
+	
+	@OneToMany(mappedBy = "product")
+	private List<Batch> batches;
 	
 	public Product() {
 		
