@@ -1,6 +1,7 @@
 com/cccpharma/app/util/ProductStatus.class
 com/cccpharma/app/repository/BatchRepository.class
 com/cccpharma/app/repository/UserRepository.class
+com/cccpharma/app/controller/BatchController.class
 com/cccpharma/app/controller/ProductController.class
 com/cccpharma/app/model/Product.class
 com/cccpharma/app/AppApplication.class
