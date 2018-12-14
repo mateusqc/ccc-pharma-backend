@@ -3,15 +3,11 @@ package com.cccpharma.app.model;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -25,9 +21,12 @@ public class Batch  implements Serializable {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private long id;
 	
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "product", nullable = false)
-	private Product product;
+	@Column(name = "product_id", nullable = false)
+	private long productId;
+	
+//	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//	@JoinColumn(name = "product", nullable = false)
+//	private Product product;
 	
 	@Column(name = "quantity", nullable = false)
 	private int quantity;
@@ -42,11 +41,11 @@ public class Batch  implements Serializable {
 	public void setId(long id) {
 		this.id = id;
 	}
-	public Product getProduct() {
-		return product;
+	public long getProductId() {
+		return productId;
 	}
-	public void setProduct(Product product) {
-		this.product = product;
+	public void setProductId(long productId) {
+		this.productId = productId;
 	}
 	public int getQuantity() {
 		return quantity;
@@ -54,23 +53,20 @@ public class Batch  implements Serializable {
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
-	public Date getShelfLife() {
+	public Date getExpirationDate() {
 		return expirationDate;
 	}
-	public void setShelfLife(Date shelfLife) {
-		this.expirationDate = shelfLife;
-	}
-	public static long getSerialversionuid() {
-		return serialVersionUID;
+	public void setExpirationDate(Date expirationDate) {
+		this.expirationDate = expirationDate;
 	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + (int) (id ^ (id >>> 32));
-		result = prime * result + ((product == null) ? 0 : product.hashCode());
-		result = prime * result + quantity;
 		result = prime * result + ((expirationDate == null) ? 0 : expirationDate.hashCode());
+		result = prime * result + (int) (id ^ (id >>> 32));
+		result = prime * result + (int) (productId ^ (productId >>> 32));
+		result = prime * result + quantity;
 		return result;
 	}
 	@Override
@@ -82,25 +78,22 @@ public class Batch  implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Batch other = (Batch) obj;
-		if (id != other.id)
-			return false;
-		if (product == null) {
-			if (other.product != null)
-				return false;
-		} else if (!product.equals(other.product))
-			return false;
-		if (quantity != other.quantity)
-			return false;
 		if (expirationDate == null) {
 			if (other.expirationDate != null)
 				return false;
 		} else if (!expirationDate.equals(other.expirationDate))
 			return false;
+		if (id != other.id)
+			return false;
+		if (productId != other.productId)
+			return false;
+		if (quantity != other.quantity)
+			return false;
 		return true;
 	}
 	@Override
 	public String toString() {
-		return "Batch [id=" + id + ", product=" + product + ", quantity=" + quantity + ", expirationDate="
+		return "Batch [id=" + id + ", productId=" + productId + ", quantity=" + quantity + ", expirationDate="
 				+ expirationDate + "]";
 	}
 
