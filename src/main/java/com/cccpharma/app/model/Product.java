@@ -3,6 +3,7 @@ package com.cccpharma.app.model;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -29,7 +30,7 @@ public class Product implements Serializable {
 	@Column(name = "name", nullable = false)
 	private String name;
 	
-	@Column(name = "bar_code", nullable = false)
+	@Column(name = "bar_code", nullable = false, unique = true)
 	private String barCode;
 	
 	@Column(name = "manufacturer")
@@ -46,7 +47,7 @@ public class Product implements Serializable {
 	@Column(name = "price", nullable = false)
 	private double price;
 	
-	@OneToMany(mappedBy = "product")
+	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
 	private List<Batch> batches;
 	
 	public Product() {
