@@ -14,6 +14,7 @@ import com.cccpharma.app.model.Batch;
 import com.cccpharma.app.model.Product;
 import com.cccpharma.app.repository.BatchRepository;
 import com.cccpharma.app.repository.ProductRepository;
+import com.cccpharma.app.util.ProductStatus;
 
 @Service
 public class BatchService {
@@ -36,7 +37,7 @@ public class BatchService {
 		if (productData.isPresent()) {
 			Batch batch = new Batch();
 			batch.setProductId(productId);
-			Date expirationDate;
+			Date expirationDate;			
 			try {
 				expirationDate = new SimpleDateFormat("dd-MM-yyyy").parse(dateString);
 			} catch (ParseException e) {
@@ -45,6 +46,14 @@ public class BatchService {
 			}
 			batch.setQuantity(quantity);	
 			batch.setExpirationDate(expirationDate);
+			
+			if (quantity > 0 && expirationDate.compareTo(new Date()) <= 0) {
+				Product product = productData.get();
+				if (product.getStatus().equals(ProductStatus.UNAVAILABLE)) {
+						product.setStatus(ProductStatus.AVAILABLE);
+						productRepository.save(product);
+				}
+			}
 		
 			System.out.println("Create batch of: " + productData.get().getName() + "...");
 			return batchRepository.save(batch);
