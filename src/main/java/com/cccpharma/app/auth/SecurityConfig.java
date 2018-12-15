@@ -36,8 +36,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
 		http.cors().and().csrf().disable().authorizeRequests()
 			.antMatchers(HttpMethod.POST, "/login").permitAll()
-//			.anyRequest().authenticated()
-			//.and().authorizeRequests().antMatchers("/").hasRole("ADMIN")
+			.anyRequest().authenticated()
+			//.and().authorizeRequests().antMatchers("/").hasRole("Administrador")
 			.and()
 			.addFilterBefore(new JWTLoginFilter("/login", authenticationManager()),
 	                UsernamePasswordAuthenticationFilter.class)
@@ -51,11 +51,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		auth.inMemoryAuthentication()
 			.withUser("adm")
 			.password("adm")
-			.roles("ADMIN")
+			.roles("Administrador")
 			.and()
 			.withUser("noadm")
 			.password("noadm")
-			.roles("NO");
+			.roles("Cliente");
 		
 		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
 	}
