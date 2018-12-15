@@ -35,14 +35,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	protected void configure(HttpSecurity http) throws Exception {
 
 		http.cors().and().csrf().disable().authorizeRequests()
-			.antMatchers(HttpMethod.POST, "/login").permitAll()
-			.anyRequest().authenticated()
-			//.and().authorizeRequests().antMatchers("/").hasRole("Administrador")
-			.and()
-			.addFilterBefore(new JWTLoginFilter("/login", authenticationManager()),
-	                UsernamePasswordAuthenticationFilter.class)
-			.addFilterBefore(new JWTAuthenticationFilter(),
-	                UsernamePasswordAuthenticationFilter.class);
+		.antMatchers(HttpMethod.POST, "/login").permitAll()
+		.antMatchers(HttpMethod.POST, "/user/create").permitAll()
+		.anyRequest().authenticated()
+		//.and().authorizeRequests().antMatchers("/").hasRole("Administrador")
+		.and()
+		.addFilterBefore(new JWTLoginFilter("/login", authenticationManager()),
+                UsernamePasswordAuthenticationFilter.class)
+		.addFilterBefore(new JWTAuthenticationFilter(),
+                UsernamePasswordAuthenticationFilter.class);
 
 	}
 	
