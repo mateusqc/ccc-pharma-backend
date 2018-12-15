@@ -35,9 +35,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	protected void configure(HttpSecurity http) throws Exception {
 
 		http.cors().and().csrf().disable().authorizeRequests()
+		.anyRequest().authenticated().
+		and().authorizeRequests()
 		.antMatchers(HttpMethod.POST, "/login").permitAll()
 		.antMatchers(HttpMethod.POST, "/user/create").permitAll()
-		.anyRequest().authenticated()
 		//.and().authorizeRequests().antMatchers("/").hasRole("Administrador")
 		.and()
 		.addFilterBefore(new JWTLoginFilter("/login", authenticationManager()),
