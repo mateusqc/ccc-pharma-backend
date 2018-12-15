@@ -1,7 +1,5 @@
 package com.cccpharma.app.controller;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -17,69 +15,50 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cccpharma.app.model.Product;
-import com.cccpharma.app.repository.ProductRepository;
+import com.cccpharma.app.service.ProductService;
 import com.cccpharma.app.util.ProductCategory;
 
 @RestController
 //@RequestMapping("/api")
 public class ProductController {
-	
 	@Autowired
-	private ProductRepository productRepository;
+	private ProductService productService;
 	
 	@GetMapping("/products")
 	public List<Product> getAllProducts() {
 		System.out.println("GETTING ALL PRODUCTS...");
 		
-		List<Product> list = new ArrayList<>();
-		Iterable<Product> customers = productRepository.findAll();
-		
-		customers.forEach(list::add);
-		return list;
+		return productService.getAllProducts();
 	}
 	
 	@PostMapping("/products/create")
 	public Product createProduct(@Valid @RequestBody Product product) {
 		System.out.println("Create product: " + product.getName() + "...");
-		return productRepository.save(product);
+		return productService.save(product);
 	}
 	
 	@GetMapping("/products/{id}")
 	public ResponseEntity<Product> getProduct(@PathVariable("id") Long id) {
 		System.out.println("GET A PRODUCT BY ID...");
+		Product product = productService.getProductById(id);
 		
-		Optional<Product> productData = productRepository.findById(id);
-		return productData.isPresent()?
-				new ResponseEntity<Product>(productData.get(), HttpStatus.OK):
+		return product != null?
+				new ResponseEntity<Product>(product, HttpStatus.OK):
 				new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 	
 	@GetMapping("/products/category/{category}")
 	public List<Product> getProductsCategory(@PathVariable("category") ProductCategory category) {
 		System.out.println("GET ALL PRODUCTS FROM A CATHEGORY...");
-		
-		List<Product> list = new ArrayList<>();
-		Iterable<Product> products = productRepository.findByCategory(category);
-		
-		products.forEach(list::add);
-		return list;
+		return productService.getProductsByCategory(category);
 	}
 	
 	@PutMapping("/products/{id}")
 	public ResponseEntity<Product> updateProduct(@PathVariable("id") Long id, @RequestBody Product product) {
 		System.out.println("UPDATING PRODUCT " + id + "...");
 		
-		Optional<Product> productData = productRepository.findById(id);
-		if(productData.isPresent()) {
-			Product savedProduct = productData.get();
-			savedProduct.setName(product.getName());
-			savedProduct.setBarCode(product.getBarCode());
-			savedProduct.setManufacturer(product.getManufacturer());
-			savedProduct.setStatus(product.getStatus());
-			savedProduct.setCategory(product.getCategory());
-			savedProduct.setPrice(product.getPrice());
-			
-			Product updatedProduct = productRepository.save(savedProduct);
+		Product updatedProduct = productService.update(id, product);
+		if(updatedProduct != null) {
 			return new ResponseEntity<Product>(updatedProduct, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -90,12 +69,10 @@ public class ProductController {
 	public ResponseEntity<String> deleteProduct(@PathVariable("id") Long id) {
 		System.out.println("DELETE PRODUCT " + id + "...");
 		
-		try {
-			productRepository.deleteById(id);
-		} catch (Exception e) {
+		if (productService.delete(id)) {
+			return new ResponseEntity<String>("Product has been deleted.", HttpStatus.OK);
+		} else {
 			return new ResponseEntity<String>("Failed to delete.", HttpStatus.EXPECTATION_FAILED);
 		}
-		
-		return new ResponseEntity<String>("Product has been deleted.", HttpStatus.OK);
 	}
 }
