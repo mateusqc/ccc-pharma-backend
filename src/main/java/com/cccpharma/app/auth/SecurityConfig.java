@@ -4,7 +4,7 @@ package com.cccpharma.app.auth;
 import java.util.Arrays;
 
 import javax.sql.DataSource;
- 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
