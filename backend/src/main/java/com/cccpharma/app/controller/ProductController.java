@@ -34,7 +34,7 @@ public class ProductController {
 	@PostMapping("/products/create")
 	public Product createProduct(@Valid @RequestBody Product product) {
 		System.out.println("Create product: " + product.getName() + "...");
-		return productService.save(product);
+		return productService.create(product);
 	}
 	
 	@GetMapping("/products/{id}")

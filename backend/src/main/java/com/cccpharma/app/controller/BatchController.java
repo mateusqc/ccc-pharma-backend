@@ -23,6 +23,7 @@ import com.cccpharma.app.model.Batch;
 import com.cccpharma.app.model.Product;
 import com.cccpharma.app.repository.BatchRepository;
 import com.cccpharma.app.repository.ProductRepository;
+import com.cccpharma.app.service.BatchService;
 
 @RestController
 public class BatchController {
@@ -32,38 +33,23 @@ public class BatchController {
 	
 	@Autowired
 	private ProductRepository productRepository;
+	
+	@Autowired
+	private BatchService batchService;
 
 	@GetMapping("/batches")
 	public List<Batch> getAllBatches(){
 		System.out.println("GETTING ALL BATCHES");
 		
-		List<Batch> list = new ArrayList<>();
-		Iterable<Batch> data = batchRepository.findAll();
-		data.forEach(list::add);
-		
-		return list;
+		return batchService.getAllBatches();
 	}
 	
 	@PostMapping("/batches/create")
 	public ResponseEntity<Batch> createProduct(@RequestParam(value="productId") Long productId, @RequestParam(value="quantity") int quantity,
 			@RequestParam(value="expirationDate") String dateString) {
-		Optional<Product> productData = productRepository.findById(productId);
-		if (productData.isPresent()) {
-			Batch batch = new Batch();
-			batch.setProductId(productId);
-			Date expirationDate;
-			try {
-				expirationDate = new SimpleDateFormat("dd-MM-yyyy").parse(dateString);
-			} catch (ParseException e) {
-				expirationDate = new Date();
-				e.printStackTrace();
-			}
-			batch.setQuantity(quantity);	
-			batch.setExpirationDate(expirationDate);
-		
-			System.out.println("Create batch of: " + productData.get().getName() + "...");
-			batchRepository.save(batch);
-			return new ResponseEntity<Batch>(batch, HttpStatus.OK);
+		Batch newBatch = batchService.createBatch(productId, quantity, dateString);
+		if (newBatch != null) {
+			return new ResponseEntity<Batch>(newBatch, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -72,10 +58,9 @@ public class BatchController {
 	@GetMapping("/batches/{id}")
 	public ResponseEntity<Batch> getBatch(@PathVariable("id") Long id) {
 		System.out.println("GET A BATCH BY ID...");
-		
-		Optional<Batch> batchData = batchRepository.findById(id);
-		return batchData.isPresent()?
-				new ResponseEntity<Batch>(batchData.get(), HttpStatus.OK):
+		Batch batch = batchService.getBatchById(id);
+		return batch != null ?
+				new ResponseEntity<Batch>(batch, HttpStatus.OK):
 				new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 	
@@ -83,17 +68,8 @@ public class BatchController {
 	public ResponseEntity<Batch> updateBatch(@PathVariable("id") Long id, @RequestBody Batch batch) {
 		System.out.println("UPDATING BATCH " + id + "...");
 		
-		Optional<Batch> batchData = batchRepository.findById(id);
-		if(batchData.isPresent()) {
-			Batch savedBatch = batchData.get();
-//			savedBatch.setProductId(batch.getProductId());
-			if (batch.getProductId() != savedBatch.getProductId()) {
-				return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-			}
-			savedBatch.setQuantity(batch.getQuantity());
-			savedBatch.setExpirationDate(batch.getExpirationDate());
-			
-			Batch updatedBatch = batchRepository.save(savedBatch);
+		Batch updatedBatch = batchService.updateBatch(id, batch);
+		if(updatedBatch != null) {
 			return new ResponseEntity<Batch>(updatedBatch, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -105,7 +81,7 @@ public class BatchController {
 		System.out.println("DELETING BATCH " + id + "...");
 		
 		try {
-			batchRepository.deleteById(id);
+			batchService.deleteBatch(id);
 		} catch (Exception e) {
 			return new ResponseEntity<String>("Failed to delete.", HttpStatus.EXPECTATION_FAILED);
 		}
