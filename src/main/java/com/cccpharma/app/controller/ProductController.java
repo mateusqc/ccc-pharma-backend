@@ -35,7 +35,9 @@ public class ProductController {
 		System.out.println("GETTING ALL PRODUCTS...");
 		List<Product> products = productService.getAllProducts();
 		for (Product product : products) {
-			product.setStock(productService.getProductStock(product.getId()));
+			Integer stock[] = productService.getProductStock(product.getId());
+			product.setStock(stock[0]);
+			product.setExpiredStock(stock[1]);
 		}
 		return products;
 	}
@@ -55,17 +57,19 @@ public class ProductController {
 				new ResponseEntity<Product>(product, HttpStatus.OK):
 				new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
-	
+
 	@GetMapping("/products/stock/{id}")
-	public ResponseEntity<Integer> getProductStock(@PathVariable("id") Long id) {
+	public ResponseEntity<Integer[]> getProductStock(@PathVariable("id") Long id) {
 		System.out.println("GET stock  from Batches and product ID...");
-		Integer stock = productService.getProductStock(id);
+		Integer stock[] = productService.getProductStock(id);
 	
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("type", "no-cors");
 		
-		return new ResponseEntity<Integer>(stock, headers, HttpStatus.OK);
+		//returns Integer[stock,expiredstock]
+		return new ResponseEntity<Integer[]>(stock, headers, HttpStatus.OK);
 	}
+	
 	
 	@GetMapping("/products/category/{category}")
 	public List<Product> getProductsCategory(@PathVariable("category") ProductCategory category) {

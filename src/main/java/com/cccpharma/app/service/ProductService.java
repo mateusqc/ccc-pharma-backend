@@ -43,17 +43,22 @@ public class ProductService {
 		products.forEach(list::add);
 		return list;
 	}
-	
-	public Integer getProductStock(Long id) {
+
+	public Integer[] getProductStock(Long id) {
 		List<Batch> batches = batchService.getBatchesByProductId(id);
-		Integer stock = 0;
+		Integer[] stock = {0,0};
 		
-		for (Batch batch : batches) 
-			if (!batch.isExpired())
-				stock += batch.getQuantity();
-		
+		for (Batch batch : batches) { 
+			if (!batch.isExpired()) {
+				stock[0] += batch.getQuantity();
+			} else {
+				stock[1] += batch.getQuantity();
+			}
+		}
 		return stock;
 	}
+	
+	
 	public Product update(Long id, Product newProduct) {
 		Optional<Product> productData = productRepository.findById(id);
 		if(productData.isPresent()) {
