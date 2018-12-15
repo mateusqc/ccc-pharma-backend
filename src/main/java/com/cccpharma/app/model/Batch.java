@@ -38,27 +38,47 @@ public class Batch  implements Serializable {
 	public long getId() {
 		return id;
 	}
+	
 	public void setId(long id) {
 		this.id = id;
 	}
+	
 	public long getProductId() {
 		return productId;
 	}
+	
 	public void setProductId(long productId) {
 		this.productId = productId;
 	}
+	
 	public int getQuantity() {
 		return quantity;
 	}
+	
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
+	
 	public Date getExpirationDate() {
 		return expirationDate;
 	}
+	
 	public void setExpirationDate(Date expirationDate) {
 		this.expirationDate = expirationDate;
 	}
+	
+	public long getTimeUntilExpire() {
+		Date today = new Date();
+		System.out.println(expirationDate);
+		System.out.println(today);
+        long difference =  (expirationDate.getTime()-today.getTime())/86400000;
+        return difference;
+	}
+	
+	public boolean isExpired() {
+		return (getTimeUntilExpire() < 0);
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -96,5 +116,4 @@ public class Batch  implements Serializable {
 		return "Batch [id=" + id + ", productId=" + productId + ", quantity=" + quantity + ", expirationDate="
 				+ expirationDate + "]";
 	}
-
 }

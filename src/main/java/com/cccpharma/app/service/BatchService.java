@@ -66,7 +66,18 @@ public class BatchService {
 		Optional<Batch> batchData = batchRepository.findById(id);
 		return batchData.isPresent()? batchData.get() : null;
 	}
-	
+
+	public List<Batch> getBatchesByProductId(Long id) {
+		List<Batch> list = getAllBatches();
+		List<Batch> ret = new ArrayList<Batch>();
+		for (Batch batch : list) {
+			if (batch.getProductId() == id) {
+				ret.add(batch);
+			}
+		}
+		return ret;
+	}
+
 	public Batch updateBatch(Long id, Batch batch) {
 		Optional<Batch> batchData = batchRepository.findById(id);
 		if(batchData.isPresent()) {

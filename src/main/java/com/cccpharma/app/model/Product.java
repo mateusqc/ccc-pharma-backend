@@ -47,6 +47,8 @@ public class Product implements Serializable {
 //	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
 //	private List<Batch> batches;
 	
+	private Integer stock = 0;
+	
 	public Product() {
 		
 	}
@@ -59,6 +61,14 @@ public class Product implements Serializable {
 		this.id = id;
 	}
 	
+	public Integer getStock() {
+		return stock;
+	}
+
+	public void setStock(Integer stock) {
+		this.stock = stock;
+	}
+
 	public String getName() {
 		return name;
 	}
