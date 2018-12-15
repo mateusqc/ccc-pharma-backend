@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cccpharma.app.model.Batch;
 import com.cccpharma.app.model.Product;
+import com.cccpharma.app.service.BatchService;
 import com.cccpharma.app.service.ProductService;
 import com.cccpharma.app.util.ProductCategory;
 
@@ -26,12 +28,16 @@ import com.cccpharma.app.util.ProductCategory;
 public class ProductController {
 	@Autowired
 	private ProductService productService;
+
 	
 	@GetMapping("/products")
 	public List<Product> getAllProducts() {
 		System.out.println("GETTING ALL PRODUCTS...");
-		
-		return productService.getAllProducts();
+		List<Product> products = productService.getAllProducts();
+		for (Product product : products) {
+			product.setStock(productService.getProductStock(product.getId()));
+		}
+		return products;
 	}
 	
 	@PostMapping("/products/create")
@@ -50,6 +56,17 @@ public class ProductController {
 		return product != null?
 				new ResponseEntity<Product>(product, headers, HttpStatus.OK):
 				new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
+	}
+	
+	@GetMapping("/products/stock/{id}")
+	public ResponseEntity<Integer> getProductStock(@PathVariable("id") Long id) {
+		System.out.println("GET stock  from Batches and product ID...");
+		Integer stock = productService.getProductStock(id);
+	
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("type", "no-cors");
+		
+		return new ResponseEntity<Integer>(stock, headers, HttpStatus.OK);
 	}
 	
 	@GetMapping("/products/category/{category}")
@@ -80,4 +97,6 @@ public class ProductController {
 			return new ResponseEntity<String>("Failed to delete.", HttpStatus.EXPECTATION_FAILED);
 		}
 	}
+	
+	
 }

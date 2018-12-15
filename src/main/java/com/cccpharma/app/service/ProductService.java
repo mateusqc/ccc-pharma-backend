@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cccpharma.app.model.Batch;
 import com.cccpharma.app.model.Product;
 import com.cccpharma.app.repository.ProductRepository;
 import com.cccpharma.app.util.ProductCategory;
@@ -16,6 +17,10 @@ public class ProductService {
 	
 	@Autowired
 	private ProductRepository productRepository;
+
+	@Autowired
+	private BatchService batchService;
+	
 	
 	public List<Product> getAllProducts() {
 		List<Product> list = new ArrayList<>();
@@ -38,6 +43,16 @@ public class ProductService {
 		return list;
 	}
 	
+	public Integer getProductStock(Long id) {
+		List<Batch> batches = batchService.getBatchesByProductId(id);
+		Integer stock = 0;
+		
+		for (Batch batch : batches) 
+			if (!batch.isExpired())
+				stock += batch.getQuantity();
+		
+		return stock;
+	}
 	public Product update(Long id, Product newProduct) {
 		Optional<Product> productData = productRepository.findById(id);
 		if(productData.isPresent()) {
