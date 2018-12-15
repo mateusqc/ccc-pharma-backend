@@ -46,9 +46,18 @@ public class Product implements Serializable {
 	
 //	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
 //	private List<Batch> batches;
-	
+
 	private Integer stock = 0;
+	private Integer expiredStock = 0;
 	
+	public Integer getExpiredStock() {
+		return expiredStock;
+	}
+
+	public void setExpiredStock(Integer expiredStock) {
+		this.expiredStock = expiredStock;
+	}
+
 	public Product() {
 		
 	}
