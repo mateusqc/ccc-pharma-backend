@@ -2,7 +2,7 @@ package com.cccpharma.app.util;
 
 public enum ProductStatus {
 	AVAILABLE("Disponível"),
-	SOLD("Vendido"); 
+	UNAVAILABLE("Indisponível"); 
 
 	private String productStatus;
 	
