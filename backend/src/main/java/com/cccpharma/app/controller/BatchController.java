@@ -1,11 +1,6 @@
 package com.cccpharma.app.controller;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,20 +15,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cccpharma.app.model.Batch;
-import com.cccpharma.app.model.Product;
-import com.cccpharma.app.repository.BatchRepository;
-import com.cccpharma.app.repository.ProductRepository;
 import com.cccpharma.app.service.BatchService;
 
 @RestController
 public class BatchController {
-	
-	@Autowired
-	private BatchRepository batchRepository;
-	
-	@Autowired
-	private ProductRepository productRepository;
-	
 	@Autowired
 	private BatchService batchService;
 

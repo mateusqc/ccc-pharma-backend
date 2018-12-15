@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -11,7 +12,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -23,9 +23,11 @@ public class Cart implements Serializable{
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private long id;
 	
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_cart_owner", nullable = false)
-	private User user;
+//	@OneToOne(fetch = FetchType.LAZY)
+//	@JoinColumn(name = "user_cart_owner", nullable = false)
+//	private User user;
+	@Column(nullable = false, unique = true)
+	private String userCookie;
 	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "products")
@@ -37,11 +39,11 @@ public class Cart implements Serializable{
 	public void setId(long id) {
 		this.id = id;
 	}
-	public User getUser() {
-		return user;
+	public String getUserCookie() {
+		return userCookie;
 	}
-	public void setUser(User user) {
-		this.user = user;
+	public void setUserCookie(String userCookie) {
+		this.userCookie = userCookie;
 	}
 	public List<Product> getProducts() {
 		return products;
@@ -55,7 +57,7 @@ public class Cart implements Serializable{
 		int result = 1;
 		result = prime * result + (int) (id ^ (id >>> 32));
 		result = prime * result + ((products == null) ? 0 : products.hashCode());
-		result = prime * result + ((user == null) ? 0 : user.hashCode());
+		result = prime * result + ((userCookie == null) ? 0 : userCookie.hashCode());
 		return result;
 	}
 	@Override
@@ -74,16 +76,16 @@ public class Cart implements Serializable{
 				return false;
 		} else if (!products.equals(other.products))
 			return false;
-		if (user == null) {
-			if (other.user != null)
+		if (userCookie == null) {
+			if (other.userCookie != null)
 				return false;
-		} else if (!user.equals(other.user))
+		} else if (!userCookie.equals(other.userCookie))
 			return false;
 		return true;
 	}
 	@Override
 	public String toString() {
-		return "Cart [id=" + id + ", user=" + user + ", products=" + products + "]";
+		return "Cart [id=" + id + ", userCookie=" + userCookie + ", products=" + products + "]";
 	}	
 
 }
