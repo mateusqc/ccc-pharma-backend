@@ -9,9 +9,6 @@ import com.cccpharma.app.model.User;
 
 @Repository
 public interface UserRepository extends CrudRepository<User, Long> {
-<<<<<<< HEAD
-=======
 	@Query("SELECT u FROM User u WHERE u.email = :email")
 	public User findByEmail(@Param("email") String email);
->>>>>>> master
 }
