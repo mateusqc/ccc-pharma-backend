@@ -31,7 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
 		http.csrf().disable().authorizeRequests()
 			.antMatchers(HttpMethod.POST, "/login").permitAll()
-			.anyRequest().authenticated()
+//			.anyRequest().authenticated()
 			//.and().authorizeRequests().antMatchers("/").hasRole("ADMIN")
 			.and()
 			.addFilterBefore(new JWTLoginFilter("/login", authenticationManager()),
