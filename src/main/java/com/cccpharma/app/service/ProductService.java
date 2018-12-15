@@ -11,6 +11,7 @@ import com.cccpharma.app.model.Batch;
 import com.cccpharma.app.model.Product;
 import com.cccpharma.app.repository.ProductRepository;
 import com.cccpharma.app.util.ProductCategory;
+import com.cccpharma.app.util.ProductStatus;
 
 @Service
 public class ProductService {
@@ -71,6 +72,9 @@ public class ProductService {
 	}
 	
 	public Product create(Product product) {
+		if (product.getStatus() == null || !product.getStatus().equals(ProductStatus.UNAVAILABLE)) {
+			product.setStatus(ProductStatus.UNAVAILABLE);
+		}
 		return productRepository.save(product);
 	}
 	
