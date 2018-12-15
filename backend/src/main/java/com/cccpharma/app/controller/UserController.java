@@ -1,5 +1,6 @@
 package com.cccpharma.app.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cccpharma.app.model.Product;
@@ -23,6 +26,11 @@ import com.cccpharma.app.service.UserService;
 public class UserController {
 	@Autowired
 	private UserService userService;
+	
+	@RequestMapping(value = "/user/loggedUser", method = RequestMethod.GET)
+	public String currentUserName(Principal principal) {
+	    return principal.getName();
+	}
 	
 	@GetMapping("/user")
 	public List<User> getAllUsers() {
