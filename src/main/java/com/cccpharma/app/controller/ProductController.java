@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +22,7 @@ import com.cccpharma.app.util.ProductCategory;
 
 @RestController
 //@RequestMapping("/api")
+@CrossOrigin(origins = "http://localhost:3000")
 public class ProductController {
 	@Autowired
 	private ProductService productService;
@@ -43,7 +45,7 @@ public class ProductController {
 		System.out.println("GET A PRODUCT BY ID...");
 		Product product = productService.getProductById(id);
 		HttpHeaders headers = new HttpHeaders();
-		headers.add("Access-Control-Allow-Origin", "*");
+		headers.add("type", "no-cors");
 		
 		return product != null?
 				new ResponseEntity<Product>(product, headers, HttpStatus.OK):
