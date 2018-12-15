@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -19,12 +20,19 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableAutoConfiguration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
+	@Autowired
+	DataSource dataSource;
+	
+	@Autowired
+    private UserDetailsService userDetailsService;
+	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 
 		http.csrf().disable().authorizeRequests()
 			.antMatchers(HttpMethod.POST, "/login").permitAll()
 			.anyRequest().authenticated()
+			//.and().authorizeRequests().antMatchers("/").hasRole("ADMIN")
 			.and()
 			.addFilterBefore(new JWTLoginFilter("/login", authenticationManager()),
 	                UsernamePasswordAuthenticationFilter.class)
@@ -38,7 +46,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		auth.inMemoryAuthentication()
 			.withUser("adm")
 			.password("adm")
-			.roles("ADMIN");
+			.roles("ADMIN")
+			.and()
+			.withUser("noadm")
+			.password("noadm")
+			.roles("NO");
+		
+		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
 	}
 	
 	@SuppressWarnings("deprecation")
