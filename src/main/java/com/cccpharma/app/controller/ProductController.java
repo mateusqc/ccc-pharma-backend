@@ -4,6 +4,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -41,10 +42,12 @@ public class ProductController {
 	public ResponseEntity<Product> getProduct(@PathVariable("id") Long id) {
 		System.out.println("GET A PRODUCT BY ID...");
 		Product product = productService.getProductById(id);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Access-Control-Allow-Origin", "*");
 		
 		return product != null?
-				new ResponseEntity<Product>(product, HttpStatus.OK):
-				new ResponseEntity<>(HttpStatus.NOT_FOUND);
+				new ResponseEntity<Product>(product, headers, HttpStatus.OK):
+				new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
 	}
 	
 	@GetMapping("/products/category/{category}")
