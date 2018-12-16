@@ -35,6 +35,7 @@ public class BatchController {
 	public ResponseEntity<Batch> createProduct(@RequestParam(value="productId") Long productId, @RequestParam(value="quantity") int quantity,
 			@RequestParam(value="expirationDate") String dateString) {
 		Batch newBatch = batchService.createBatch(productId, quantity, dateString);
+		
 		if (newBatch != null) {
 			return new ResponseEntity<Batch>(newBatch, HttpStatus.OK);
 		} else {

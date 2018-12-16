@@ -16,9 +16,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cccpharma.app.model.Batch;
 import com.cccpharma.app.model.Product;
-import com.cccpharma.app.service.BatchService;
 import com.cccpharma.app.service.ProductService;
 import com.cccpharma.app.util.ProductCategory;
 
@@ -34,11 +32,6 @@ public class ProductController {
 	public List<Product> getAllProducts() {
 		System.out.println("GETTING ALL PRODUCTS...");
 		List<Product> products = productService.getAllProducts();
-		for (Product product : products) {
-			Integer stock[] = productService.getProductStock(product.getId());
-			product.setStock(stock[0]);
-			product.setExpiredStock(stock[1]);
-		}
 		return products;
 	}
 	
