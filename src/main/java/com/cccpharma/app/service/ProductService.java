@@ -18,37 +18,47 @@ public class ProductService {
 	
 	@Autowired
 	private ProductRepository productRepository;
-
-	@Autowired
-	private BatchService batchService;
 	
 	
 	public List<Product> getAllProducts() {
-		List<Product> list = new ArrayList<>();
+		List<Product> productList = new ArrayList<>();
 		Iterable<Product> productsData = productRepository.findAll();
 		
-		productsData.forEach(list::add);
-		return list;
+		for (Product product : productsData) {
+			product.setStockData();
+			productList.add(product);
+		}
+		
+		return productList;
 	}
 	
 	public Product getProductById(Long id) {
 		Optional<Product> productData = productRepository.findById(id);
-		return productData.isPresent()? productData.get() : null;
+		if (productData.isPresent()) {
+			Product product = productData.get();
+			product.setStockData();
+			return product;
+		} else {
+			return null;
+		}
 	}
 	
 	public List<Product> getProductsByCategory(ProductCategory category) {
-		List<Product> list = new ArrayList<>();
+		List<Product> productList = new ArrayList<>();
 		Iterable<Product> products = productRepository.findByCategory(category);
 		
-		products.forEach(list::add);
-		return list;
+		for (Product product : products) {
+			product.setStockData();
+			productList.add(product);
+		}
+		return productList;
 	}
 
 	public Integer[] getProductStock(Long id) {
-		List<Batch> batches = batchService.getBatchesByProductId(id);
+		Product product = getProductById(id);
 		Integer[] stock = {0,0};
 		
-		for (Batch batch : batches) { 
+		for (Batch batch : product.getBatches()) { 
 			if (!batch.isExpired()) {
 				stock[0] += batch.getQuantity();
 			} else {
@@ -80,6 +90,7 @@ public class ProductService {
 		if (product.getStatus() == null || !product.getStatus().equals(ProductStatus.UNAVAILABLE)) {
 			product.setStatus(ProductStatus.UNAVAILABLE);
 		}
+//		product.setStockData();
 		return productRepository.save(product);
 	}
 	

@@ -14,7 +14,6 @@ import com.cccpharma.app.model.Batch;
 import com.cccpharma.app.model.Product;
 import com.cccpharma.app.repository.BatchRepository;
 import com.cccpharma.app.repository.ProductRepository;
-import com.cccpharma.app.util.ProductStatus;
 
 @Service
 public class BatchService {
@@ -27,7 +26,10 @@ public class BatchService {
 	public List<Batch> getAllBatches() {
 		List<Batch> list = new ArrayList<>();
 		Iterable<Batch> data = batchRepository.findAll();
-		data.forEach(list::add);
+		for (Batch batch : data) {
+			batch.getProduct().setStockData();
+			list.add(batch);
+		}
 		
 		return list;
 	}
@@ -35,8 +37,9 @@ public class BatchService {
 	public Batch createBatch(Long productId, int quantity, String dateString) {
 		Optional<Product> productData = productRepository.findById(productId);
 		if (productData.isPresent()) {
+			Product product = productData.get();
+			product.setStockData();
 			Batch batch = new Batch();
-			batch.setProductId(productId);
 			Date expirationDate;			
 			try {
 				expirationDate = new SimpleDateFormat("dd-MM-yyyy").parse(dateString);
@@ -46,14 +49,7 @@ public class BatchService {
 			}
 			batch.setQuantity(quantity);	
 			batch.setExpirationDate(expirationDate);
-			
-			if (quantity > 0 && expirationDate.compareTo(new Date()) <= 0) {
-				Product product = productData.get();
-				if (product.getStatus().equals(ProductStatus.UNAVAILABLE)) {
-						product.setStatus(ProductStatus.AVAILABLE);
-						productRepository.save(product);
-				}
-			}
+			batch.setProduct(product);
 		
 			System.out.println("Create batch of: " + productData.get().getName() + "...");
 			return batchRepository.save(batch);
@@ -64,32 +60,47 @@ public class BatchService {
 	
 	public Batch getBatchById(Long id) {
 		Optional<Batch> batchData = batchRepository.findById(id);
-		return batchData.isPresent()? batchData.get() : null;
+		if (batchData.isPresent()) {
+			Batch batch = batchData.get();
+			batch.getProduct().setStockData();
+			return batch;
+		} else {
+			return null;
+		}
 	}
 
 	public List<Batch> getBatchesByProductId(Long id) {
-		List<Batch> list = getAllBatches();
-		List<Batch> ret = new ArrayList<Batch>();
-		for (Batch batch : list) {
-			if (batch.getProductId() == id) {
-				ret.add(batch);
-			}
+		Optional<Product> productData = productRepository.findById(id);
+		if (productData.isPresent()) {
+			return productData.get().getBatches();
+		} else {
+			return null;
 		}
-		return ret;
 	}
 
-	public Batch updateBatch(Long id, Batch batch) {
+	public Batch updateBatch(Long id, Integer quantity, String dateString) {
 		Optional<Batch> batchData = batchRepository.findById(id);
 		if(batchData.isPresent()) {
 			Batch savedBatch = batchData.get();
-			if (batch.getProductId() != savedBatch.getProductId()) {
-				return null;
+			if (dateString != null) {
+				if (!dateString.trim().equals("")) {
+					Date expirationDate;
+					try {
+						expirationDate = new SimpleDateFormat("dd-MM-yyyy").parse(dateString);
+					} catch (ParseException e) {
+						expirationDate = new Date();
+						e.printStackTrace();
+					}
+					savedBatch.setExpirationDate(expirationDate);
+				}
 			}
-			savedBatch.setQuantity(batch.getQuantity());
-			savedBatch.setExpirationDate(batch.getExpirationDate());
+			if (quantity != null) {
+				savedBatch.setQuantity(quantity);
+			}
 			
 			return batchRepository.save(savedBatch);
 		} else {
+			System.out.println("PRODUCT NOT FOUND");
 			return null;
 		}
 	}

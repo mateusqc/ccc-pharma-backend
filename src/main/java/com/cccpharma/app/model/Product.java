@@ -1,7 +1,9 @@
 package com.cccpharma.app.model;
 
 import java.io.Serializable;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -9,10 +11,12 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.cccpharma.app.util.ProductCategory;
 import com.cccpharma.app.util.ProductStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "product")
@@ -44,23 +48,12 @@ public class Product implements Serializable {
 	@Column(name = "price", nullable = false)
 	private double price;
 	
-//	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-//	private List<Batch> batches;
+	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+	private List<Batch> batches;
 
-	private Integer stock = 0;
-	private Integer expiredStock = 0;
+	private Integer stock;
 	
-	public Integer getExpiredStock() {
-		return expiredStock;
-	}
-
-	public void setExpiredStock(Integer expiredStock) {
-		this.expiredStock = expiredStock;
-	}
-
-	public Product() {
-		
-	}
+	private Integer expiredStock;
 	
 	public long getId() {
 		return id;
@@ -73,9 +66,26 @@ public class Product implements Serializable {
 	public Integer getStock() {
 		return stock;
 	}
+	
+	public Integer getExpiredStock() {
+		return expiredStock;
+	}
 
-	public void setStock(Integer stock) {
-		this.stock = stock;
+	public void setStockData() {
+		this.stock = 0;
+		this.expiredStock = 0;
+		for (Batch batch : batches) {
+			if (batch.isExpired()) {
+				this.expiredStock += batch.getQuantity();
+			} else {
+				this.stock += batch.getQuantity();
+			}
+		}
+		if (this.stock == 0) {
+			this.status = ProductStatus.UNAVAILABLE;
+		} else {
+			this.status = ProductStatus.AVAILABLE;
+		}
 	}
 
 	public String getName() {
@@ -86,6 +96,16 @@ public class Product implements Serializable {
 		this.name = name;
 	}
 	
+	@JsonIgnore
+	public List<Batch> getBatches() {
+		return batches;
+	}
+
+	public void setBatches(List<Batch> batches) {
+		this.batches = batches;
+		setStockData();
+	}
+
 	public String getBarCode() {
 		return barCode;
 	}
