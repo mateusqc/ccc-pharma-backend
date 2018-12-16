@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -53,10 +52,11 @@ public class BatchController {
 	}
 	
 	@PutMapping("/batches/{id}")
-	public ResponseEntity<Batch> updateBatch(@PathVariable("id") Long id, @RequestBody Batch batch) {
+	public ResponseEntity<Batch> updateBatch(@PathVariable("id") Long id, @RequestParam(value="quantity") Integer quantity,
+			@RequestParam(value="expirationDate") String expirationDate) {
 		System.out.println("UPDATING BATCH " + id + "...");
 		
-		Batch updatedBatch = batchService.updateBatch(id, batch);
+		Batch updatedBatch = batchService.updateBatch(id, quantity, expirationDate);
 		if(updatedBatch != null) {
 			return new ResponseEntity<Batch>(updatedBatch, HttpStatus.OK);
 		} else {

@@ -35,7 +35,6 @@ public class BatchService {
 	}
 	
 	public Batch createBatch(Long productId, int quantity, String dateString) {
-		System.out.println("Entrou");
 		Optional<Product> productData = productRepository.findById(productId);
 		if (productData.isPresent()) {
 			Product product = productData.get();
@@ -79,18 +78,29 @@ public class BatchService {
 		}
 	}
 
-	public Batch updateBatch(Long id, Batch batch) {
+	public Batch updateBatch(Long id, Integer quantity, String dateString) {
 		Optional<Batch> batchData = batchRepository.findById(id);
 		if(batchData.isPresent()) {
 			Batch savedBatch = batchData.get();
-			if (batch.getProduct() != savedBatch.getProduct()) {
-				return null;
+			if (dateString != null) {
+				if (!dateString.trim().equals("")) {
+					Date expirationDate;
+					try {
+						expirationDate = new SimpleDateFormat("dd-MM-yyyy").parse(dateString);
+					} catch (ParseException e) {
+						expirationDate = new Date();
+						e.printStackTrace();
+					}
+					savedBatch.setExpirationDate(expirationDate);
+				}
 			}
-			savedBatch.setQuantity(batch.getQuantity());
-			savedBatch.setExpirationDate(batch.getExpirationDate());
+			if (quantity != null) {
+				savedBatch.setQuantity(quantity);
+			}
 			
 			return batchRepository.save(savedBatch);
 		} else {
+			System.out.println("PRODUCT NOT FOUND");
 			return null;
 		}
 	}

@@ -12,7 +12,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.PostUpdate;
 import javax.persistence.Table;
 
 import com.cccpharma.app.util.ProductCategory;
@@ -84,6 +83,8 @@ public class Product implements Serializable {
 		}
 		if (this.stock == 0) {
 			this.status = ProductStatus.UNAVAILABLE;
+		} else {
+			this.status = ProductStatus.AVAILABLE;
 		}
 	}
 
@@ -102,6 +103,7 @@ public class Product implements Serializable {
 
 	public void setBatches(List<Batch> batches) {
 		this.batches = batches;
+		setStockData();
 	}
 
 	public String getBarCode() {
