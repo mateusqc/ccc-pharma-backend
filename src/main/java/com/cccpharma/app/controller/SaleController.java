@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,7 +30,7 @@ public class SaleController {
 		if (products != null) {
 			return new ResponseEntity<List<Product>>(products, HttpStatus.OK);
 		} else {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 	}
 	
@@ -39,5 +40,11 @@ public class SaleController {
 		return saleService.addProductsToCart(token, productMap)?
 				new ResponseEntity<String>("Products added with success!", HttpStatus.OK):
 				new ResponseEntity<String>("Cart was not created", HttpStatus.NOT_FOUND);
+	}
+	
+	@DeleteMapping("/sale/cart")
+	public ResponseEntity<String> cleanCart() {
+		saleService.cleanCart();
+		return new ResponseEntity<String>("Cart was Cleaned.", HttpStatus.OK);
 	}
 }

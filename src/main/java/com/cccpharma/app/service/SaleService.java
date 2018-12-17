@@ -50,14 +50,13 @@ public class SaleService {
 			for (Long productId : cart.getProducts().keySet()) {
 				productList.add(productService.getProductById(productId));
 			}
-			return productList;
-		} else {
-			return null;
+			
 		}
+		return productList;
 		
 	}
 	
-	public void cleanCart(String userToken) {
+	public void cleanCart() {
 		cart.getProducts().clear();
 	}
 }
