@@ -33,7 +33,7 @@ public class User implements Serializable{
 	private String password;
 	
 	@Enumerated(EnumType.STRING)
-	@Column(name = "Role")
+	@Column(name = "role")
 	private UserRole role;
 	
 	public long getId() {
