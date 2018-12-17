@@ -23,7 +23,7 @@ import com.cccpharma.app.util.ProductCategory;
 
 @RestController
 //@RequestMapping("/api")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "https://cccpharma.herokuapp.com")
 public class DiscountController {
 	@Autowired
 	private DiscountService discountService;
@@ -49,6 +49,16 @@ public class DiscountController {
 			deleteDiscount(discount.getProductCategory());
 		
 		return discountService.create(discount);
+	}
+
+	@GetMapping("/discount/get/{category}")
+	public Discount getById(@PathVariable("category") ProductCategory category) {
+		return discountService.getDiscountById(category);
+	}
+	
+	@GetMapping("/discount/category/{category}")
+	public DiscountCategory getCategoryById(@PathVariable("category") ProductCategory category) {
+		return discountService.getDiscountCategoryById(category);
 	}
 
 	@DeleteMapping("/discount/{category}")

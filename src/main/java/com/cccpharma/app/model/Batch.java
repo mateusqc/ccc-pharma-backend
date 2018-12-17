@@ -30,7 +30,8 @@ public class Batch  implements Serializable {
 //	@Column(name = "product_id", nullable = false)
 //	private long productId;
 	
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REFRESH,
+			CascadeType.MERGE, CascadeType.DETACH})
 	@JoinColumn(name = "product", nullable = false)
 	private Product product;
 	

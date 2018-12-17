@@ -40,7 +40,7 @@ public class DiscountService {
 	}
 	
 	public DiscountCategory getDiscountCategoryById(ProductCategory category) {
-		return discountRepository.findById(category).get().getDiscountCategory();
+		return getDiscountById(category).getDiscountCategory();
 	}
 	
 	

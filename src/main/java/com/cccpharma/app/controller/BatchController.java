@@ -18,7 +18,7 @@ import com.cccpharma.app.model.Batch;
 import com.cccpharma.app.service.BatchService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "https://cccpharma.herokuapp.com")
 public class BatchController {
 	@Autowired
 	private BatchService batchService;

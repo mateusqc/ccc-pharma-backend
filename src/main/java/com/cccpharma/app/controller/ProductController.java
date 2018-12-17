@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cccpharma.app.model.Product;
@@ -23,7 +24,7 @@ import com.cccpharma.app.util.ProductStatus;
 
 @RestController
 //@RequestMapping("/api")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "https://cccpharma.herokuapp.com")
 public class ProductController {
 	@Autowired
 	private ProductService productService;
@@ -78,10 +79,11 @@ public class ProductController {
 	}
 	
 	@PutMapping("/products/{id}")
-	public ResponseEntity<Product> updateProduct(@PathVariable("id") Long id, @RequestBody Product product) {
+	public ResponseEntity<Product> updateProduct(@PathVariable("id") Long id, @RequestParam(value = "name") String name,
+	@RequestParam(value = "manufacturer") String manufacturer, @RequestParam("price") double price) {
 		System.out.println("UPDATING PRODUCT " + id + "...");
-		
-		Product updatedProduct = productService.update(id, product);
+				
+		Product updatedProduct = productService.update(id, name, manufacturer, price);
 		if(updatedProduct != null) {
 			return new ResponseEntity<Product>(updatedProduct, HttpStatus.OK);
 		} else {
