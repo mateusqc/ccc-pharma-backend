@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cccpharma.app.model.User;
 import com.cccpharma.app.service.UserService;
+import com.cccpharma.app.util.UserRole;
 
 @RestController
 @CrossOrigin(origins = "https://cccpharma.herokuapp.com")
@@ -90,6 +91,28 @@ public class UserController {
 			return new ResponseEntity<String>("User has been deleted.", HttpStatus.OK);
 		} else {
 			return new ResponseEntity<String>("Failed to delete.", HttpStatus.EXPECTATION_FAILED);
+		}
+	}
+	
+	@GetMapping("/user/admins")
+	public ResponseEntity<List<User>> getAllAdmins() {
+		System.out.println("GET ALL ADMINS...");
+		List<User> userList = userService.getUserByRole(UserRole.ADMIN);
+		if (userList != null) {
+			return new ResponseEntity<List<User>>(userList, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+	
+	@GetMapping("/user/clients")
+	public ResponseEntity<List<User>> getAllClients() {
+		System.out.println("GET ALL CLIENTS...");
+		List<User> userList = userService.getUserByRole(UserRole.CLIENT);
+		if (userList != null) {
+			return new ResponseEntity<List<User>>(userList, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
 }
