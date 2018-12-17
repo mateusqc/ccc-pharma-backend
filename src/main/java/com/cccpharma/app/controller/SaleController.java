@@ -9,12 +9,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cccpharma.app.model.Product;
+import com.cccpharma.app.model.Sale;
 import com.cccpharma.app.service.SaleService;
 
 @RestController
@@ -47,4 +49,20 @@ public class SaleController {
 		saleService.cleanCart();
 		return new ResponseEntity<String>("Cart was Cleaned.", HttpStatus.OK);
 	}
+	
+	@GetMapping("/sale")
+	public List<Sale> getAllSales() {
+		System.out.println("GET ALL SALES...");
+		return saleService.getAllSales();
+	}
+	
+	@DeleteMapping("/sale/{id}")
+	public ResponseEntity<String> deleteSale(@PathVariable("id") Long id) {
+		if (saleService.deleteSaleById(id)) {
+			return new ResponseEntity<String>("Product has been deleted.", HttpStatus.OK);
+		} else {
+			return new ResponseEntity<String>("Failed to delete.", HttpStatus.EXPECTATION_FAILED);
+		}
+	}
+	
 }

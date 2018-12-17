@@ -51,6 +51,9 @@ public class Product implements Serializable {
 	
 	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
 	private List<Batch> batches;
+	
+	@OneToMany(mappedBy = "sales")
+	private List<Sale> sales;
 
 	private Integer stock;
 	
