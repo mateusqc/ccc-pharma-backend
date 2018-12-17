@@ -1,6 +1,5 @@
 package com.cccpharma.app.controller;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,7 @@ import com.cccpharma.app.model.Batch;
 import com.cccpharma.app.service.BatchService;
 
 @RestController
-@CrossOrigin(origins = "https://cccpharma.herokuapp.com")
+@CrossOrigin(origins = "http://localhost:3000")
 public class BatchController {
 	@Autowired
 	private BatchService batchService;
@@ -33,7 +32,7 @@ public class BatchController {
 	
 	@PostMapping("/batches/create")
 	public ResponseEntity<Batch> createProduct(@RequestParam(value="productId") Long productId, @RequestParam(value="quantity") int quantity,
-			@RequestParam(value="expirationDate") Date dateString) {
+			@RequestParam(value="expirationDate") String dateString) {
 		Batch newBatch = batchService.createBatch(productId, quantity, dateString);
 		
 		if (newBatch != null) {
@@ -66,7 +65,7 @@ public class BatchController {
 	
 	@PutMapping("/batches/{id}")
 	public ResponseEntity<Batch> updateBatch(@PathVariable("id") Long id, @RequestParam(value="quantity") Integer quantity,
-			@RequestParam(value="expirationDate") Date expirationDate) {
+			@RequestParam(value="expirationDate") String expirationDate) {
 		System.out.println("UPDATING BATCH " + id + "...");
 		
 		Batch updatedBatch = batchService.updateBatch(id, quantity, expirationDate);
