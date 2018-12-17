@@ -20,7 +20,7 @@ import com.cccpharma.app.model.Sale;
 import com.cccpharma.app.service.SaleService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "https://cccpharma.herokuapp.com")
 public class SaleController {
 
 	@Autowired

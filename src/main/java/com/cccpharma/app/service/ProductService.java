@@ -113,16 +113,16 @@ public class ProductService {
 	}
 	
 	
-	public Product update(Long id, String name, String manufacturer, double price ) {
+	public Product update(Long id, Product newProduct) {
 		Optional<Product> productData = productRepository.findById(id);
 		if(productData.isPresent()) {
 			Product savedProduct = productData.get();
-			savedProduct.setName(name);
-//			savedProduct.setBarCode(newProduct.getBarCode());
-			savedProduct.setManufacturer(manufacturer);
-//			savedProduct.setStatus(newProduct.getStatus());
-//			savedProduct.setCategory(newProduct.getCategory());
-			savedProduct.setPrice(price);
+			savedProduct.setName(newProduct.getName());
+			savedProduct.setBarCode(newProduct.getBarCode());
+			savedProduct.setManufacturer(newProduct.getManufacturer());
+			savedProduct.setStatus(newProduct.getStatus());
+			savedProduct.setCategory(newProduct.getCategory());
+			savedProduct.setPrice(newProduct.getPrice());
 			
 			return productRepository.save(savedProduct);
 		} else {
