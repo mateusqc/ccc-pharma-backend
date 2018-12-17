@@ -91,7 +91,7 @@ public class ProductService {
 		for (Product product : productsData) {
 			product.setStockData();
 			product.setDiscount(getProductDiscountCategory(product));
-			if (product.getStock() < 15) {
+			if (product.getStock() < 15 && product.getStock() > 0) {
 				productList.add(product);
 			}
 		}

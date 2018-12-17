@@ -22,7 +22,7 @@ import com.cccpharma.app.util.ProductCategory;
 
 @RestController
 //@RequestMapping("/api")
-@CrossOrigin(origins = "https://cccpharma.herokuapp.com")
+@CrossOrigin(origins = "http://localhost:3000")
 public class DiscountController {
 	@Autowired
 	private DiscountService discountService;
