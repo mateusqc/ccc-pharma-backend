@@ -23,11 +23,15 @@ public class BatchService {
 	@Autowired
 	private ProductRepository productRepository;
 	
+	@Autowired ProductService productService;
+	
 	public List<Batch> getAllBatches() {
 		List<Batch> list = new ArrayList<>();
 		Iterable<Batch> data = batchRepository.findAll();
 		for (Batch batch : data) {
-			batch.getProduct().setStockData();
+			Product product = batch.getProduct();
+			product.setStockData();
+			product.setDiscount(productService.getProductDiscountCategory(product));
 			list.add(batch);
 		}
 		
@@ -39,6 +43,7 @@ public class BatchService {
 		if (productData.isPresent()) {
 			Product product = productData.get();
 			product.setStockData();
+			product.setDiscount(productService.getProductDiscountCategory(product));
 			Batch batch = new Batch();
 			Date expirationDate;			
 			try {
@@ -62,7 +67,9 @@ public class BatchService {
 		Optional<Batch> batchData = batchRepository.findById(id);
 		if (batchData.isPresent()) {
 			Batch batch = batchData.get();
-			batch.getProduct().setStockData();
+			Product product = batch.getProduct();
+			product.setStockData();
+			product.setDiscount(productService.getProductDiscountCategory(product));
 			return batch;
 		} else {
 			return null;

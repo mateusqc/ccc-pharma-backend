@@ -41,7 +41,7 @@ public class ProductController {
 		System.out.println("Create product: " + product.getName() + "...");
 		return productService.create(product);
 	}
-	
+
 	@GetMapping("/products/{id}")
 	public ResponseEntity<Product> getProduct(@PathVariable("id") Long id) {
 		System.out.println("GET A PRODUCT BY ID...");
@@ -64,6 +64,12 @@ public class ProductController {
 		return new ResponseEntity<Integer[]>(stock, headers, HttpStatus.OK);
 	}
 	
+
+	@GetMapping("/products/barcode/{code}")
+	public Product getAllProducts(@PathVariable("code") String barCode) {
+		System.out.println("GETTING PRODUCT BY BAR CODE...");
+		return productService.getProductByBarCode(barCode);
+	}
 	
 	@GetMapping("/products/category/{category}")
 	public List<Product> getProductsCategory(@PathVariable("category") ProductCategory category) {

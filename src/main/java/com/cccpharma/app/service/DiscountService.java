@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.cccpharma.app.model.Discount;
 import com.cccpharma.app.model.Product;
 import com.cccpharma.app.repository.DiscountRepository;
+import com.cccpharma.app.util.DiscountCategory;
 import com.cccpharma.app.util.ProductCategory;
 import com.cccpharma.app.util.ProductStatus;
 
@@ -35,7 +36,11 @@ public class DiscountService {
 		if (discountData.isPresent()) 
 			return discountData.get();
 			
-		return null;
+		return new Discount(category,DiscountCategory.NO);
+	}
+	
+	public DiscountCategory getDiscountCategoryById(ProductCategory category) {
+		return discountRepository.findById(category).get().getDiscountCategory();
 	}
 	
 	
