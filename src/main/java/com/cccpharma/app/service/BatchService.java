@@ -3,7 +3,9 @@ package com.cccpharma.app.service;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Optional;
 
@@ -110,6 +112,15 @@ public class BatchService {
 			System.out.println("PRODUCT NOT FOUND");
 			return null;
 		}
+	}
+	
+	public List<Batch> getExpiringBatches() {
+		Date today = new Date();
+		Calendar cal = new GregorianCalendar();
+		cal.setTime(today);
+		cal.add(Calendar.DAY_OF_MONTH, +30);
+		Date month = cal.getTime();
+		return batchRepository.findByNextToExpireDate(month, today);
 	}
 	
 	public boolean deleteBatch(Long id) {

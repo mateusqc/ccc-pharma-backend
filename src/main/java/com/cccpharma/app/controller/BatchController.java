@@ -87,4 +87,10 @@ public class BatchController {
 		}
 		return new ResponseEntity<String>("Batch has been deleted.", HttpStatus.OK);
 	}
+	
+	@GetMapping("/batches/toExpire")
+	public List<Batch> getToExpireBatches(){
+		System.out.println("GET TO EXPIRE BATCHES...");
+		return batchService.getExpiringBatches();
+	}
 }
