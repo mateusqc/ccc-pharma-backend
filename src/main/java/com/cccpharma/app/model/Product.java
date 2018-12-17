@@ -109,6 +109,9 @@ public class Product implements Serializable {
 	}
 
 	public double getSellingPrice() {
+		if (discount == null)
+			return getPrice();
+		
 		return getPrice() - getPrice()*discount.getDiscount();
 	}
 	

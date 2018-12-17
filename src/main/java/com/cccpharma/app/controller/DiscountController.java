@@ -51,6 +51,16 @@ public class DiscountController {
 		return discountService.create(discount);
 	}
 
+	@GetMapping("/discount/get/{category}")
+	public Discount getById(@PathVariable("category") ProductCategory category) {
+		return discountService.getDiscountById(category);
+	}
+	
+	@GetMapping("/discount/category/{category}")
+	public DiscountCategory getCategoryById(@PathVariable("category") ProductCategory category) {
+		return discountService.getDiscountCategoryById(category);
+	}
+
 	@DeleteMapping("/discount/{category}")
 	public ResponseEntity<String> deleteDiscount(@PathVariable("category") ProductCategory category) {
 		System.out.println("DELETE DISCOUNT " + category.getProductCategory());
