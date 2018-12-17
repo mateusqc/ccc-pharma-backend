@@ -1,5 +1,6 @@
 package com.cccpharma.app.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class BatchController {
 	
 	@PostMapping("/batches/create")
 	public ResponseEntity<Batch> createProduct(@RequestParam(value="productId") Long productId, @RequestParam(value="quantity") int quantity,
-			@RequestParam(value="expirationDate") String dateString) {
+			@RequestParam(value="expirationDate") Date dateString) {
 		Batch newBatch = batchService.createBatch(productId, quantity, dateString);
 		
 		if (newBatch != null) {
@@ -65,7 +66,7 @@ public class BatchController {
 	
 	@PutMapping("/batches/{id}")
 	public ResponseEntity<Batch> updateBatch(@PathVariable("id") Long id, @RequestParam(value="quantity") Integer quantity,
-			@RequestParam(value="expirationDate") String expirationDate) {
+			@RequestParam(value="expirationDate") Date expirationDate) {
 		System.out.println("UPDATING BATCH " + id + "...");
 		
 		Batch updatedBatch = batchService.updateBatch(id, quantity, expirationDate);

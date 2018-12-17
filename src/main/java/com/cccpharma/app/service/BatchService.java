@@ -34,19 +34,19 @@ public class BatchService {
 		return list;
 	}
 	
-	public Batch createBatch(Long productId, int quantity, String dateString) {
+	public Batch createBatch(Long productId, int quantity, Date expirationDate) {
 		Optional<Product> productData = productRepository.findById(productId);
 		if (productData.isPresent()) {
 			Product product = productData.get();
 			product.setStockData();
 			Batch batch = new Batch();
-			Date expirationDate;			
-			try {
-				expirationDate = new SimpleDateFormat("dd-MM-yyyy").parse(dateString);
-			} catch (ParseException e) {
-				expirationDate = new Date();
-				e.printStackTrace();
-			}
+//			Date expirationDate;			
+//			try {
+//				expirationDate = new SimpleDateFormat("dd-MM-yyyy").parse(dateString);
+//			} catch (ParseException e) {
+//				expirationDate = new Date();
+//				e.printStackTrace();
+//			}
 			batch.setQuantity(quantity);	
 			batch.setExpirationDate(expirationDate);
 			batch.setProduct(product);
@@ -78,21 +78,21 @@ public class BatchService {
 		}
 	}
 
-	public Batch updateBatch(Long id, Integer quantity, String dateString) {
+	public Batch updateBatch(Long id, Integer quantity, Date expirationDate) {
 		Optional<Batch> batchData = batchRepository.findById(id);
 		if(batchData.isPresent()) {
 			Batch savedBatch = batchData.get();
-			if (dateString != null) {
-				if (!dateString.trim().equals("")) {
-					Date expirationDate;
-					try {
-						expirationDate = new SimpleDateFormat("dd-MM-yyyy").parse(dateString);
-					} catch (ParseException e) {
-						expirationDate = new Date();
-						e.printStackTrace();
-					}
+			if (expirationDate != null) {
+//				if (!dateString.trim().equals("")) {
+//					Date expirationDate;
+//					try {
+//						expirationDate = new SimpleDateFormat("dd-MM-yyyy").parse(dateString);
+//					} catch (ParseException e) {
+//						expirationDate = new Date();
+//						e.printStackTrace();
+//					}
 					savedBatch.setExpirationDate(expirationDate);
-				}
+//				}
 			}
 			if (quantity != null) {
 				savedBatch.setQuantity(quantity);
