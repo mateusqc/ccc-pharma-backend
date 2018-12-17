@@ -31,24 +31,13 @@ public class UserController {
 
 	@GetMapping(value = "/user/loggedUser")
     @ResponseBody
-    public String currentUserName(Authentication authentication) {
-        if (authentication != null) {
-            return authentication.getName();
-        } else {
-            return "";
-        }
+    public ResponseEntity<User> currentUserName(Authentication authentication) {
+		User user = userService.getUserByEmail(authentication.getName());
+		return (user != null)?
+				new ResponseEntity<User>(user, HttpStatus.OK):
+				new ResponseEntity<User>(HttpStatus.NOT_FOUND);
     }
 
-	@GetMapping(value = "/user/loggedUser/authorities")
-    @ResponseBody
-    public String currentUserAuthorities(Authentication authentication) {
-        if (authentication != null) {
-            return userService.getUserByEmail(authentication.getName()).getRole().getUserRole();
-        } else {
-            return "";
-        }
-    }
-	
 	@GetMapping("/user")
 	public List<User> getAllUsers() {
 		System.out.println("GETTING ALL USERS...");
