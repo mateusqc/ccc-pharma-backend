@@ -1,5 +1,6 @@
 package com.cccpharma.app.controller;
 
+import java.util.Collection;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,17 +28,7 @@ import com.cccpharma.app.service.UserService;
 public class UserController {
 	@Autowired
 	private UserService userService;
-	
-	@GetMapping(value = "/user/loggedUser")
-    @ResponseBody
-    public String currentUserName(Authentication authentication) {
-        if (authentication != null) {
-            return authentication.getName();
-        } else {
-            return "";
-        }
-    }
-	
+
 	@GetMapping("/user")
 	public List<User> getAllUsers() {
 		System.out.println("GETTING ALL USERS...");
@@ -66,6 +58,18 @@ public class UserController {
 		System.out.println("CREATE USER " + user.getName() + "...");
 		return userService.createUser(user);
 	}
+	
+
+	@GetMapping(value = "/user/loggedUser")
+    @ResponseBody
+    public ResponseEntity<User> currentUserName(Authentication authentication) {
+		User user = userService.getUserByEmail(authentication.getName());
+		user.setPassword("");
+		return (user != null)?
+				new ResponseEntity<User>(user, HttpStatus.OK):
+				new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+    }
+	
 	
 	@PutMapping("/user/{id}")
 	public ResponseEntity<User> updateProduct(@PathVariable("id") Long id, @RequestBody User user) {
