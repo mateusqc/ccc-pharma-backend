@@ -34,6 +34,17 @@ public class UserController {
 		System.out.println("GETTING ALL USERS...");
 		return userService.getAllUsers();
 	}
+
+	@GetMapping(value = "/user/loggedUser")
+    @ResponseBody
+    public ResponseEntity<User> currentUserName(Authentication authentication) {
+		User user = userService.getUserByEmail(authentication.getName());
+		user.setPassword("");
+		return (user != null)?
+				new ResponseEntity<User>(user, HttpStatus.OK):
+				new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+    }
+	
 	
 	@GetMapping("/user/{id}")
 	public ResponseEntity<User> getUser(@PathVariable("id") Long id) {
@@ -60,17 +71,6 @@ public class UserController {
 	}
 	
 
-	@GetMapping(value = "/user/loggedUser")
-    @ResponseBody
-    public ResponseEntity<User> currentUserName(Authentication authentication) {
-		User user = userService.getUserByEmail(authentication.getName());
-		user.setPassword("");
-		return (user != null)?
-				new ResponseEntity<User>(user, HttpStatus.OK):
-				new ResponseEntity<User>(HttpStatus.NOT_FOUND);
-    }
-	
-	
 	@PutMapping("/user/{id}")
 	public ResponseEntity<User> updateProduct(@PathVariable("id") Long id, @RequestBody User user) {
 		
