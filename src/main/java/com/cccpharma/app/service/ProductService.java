@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 
 import com.cccpharma.app.model.Batch;
 import com.cccpharma.app.model.Product;
+import com.cccpharma.app.repository.DiscountRepository;
 import com.cccpharma.app.repository.ProductRepository;
+import com.cccpharma.app.util.DiscountCategory;
 import com.cccpharma.app.util.ProductCategory;
 import com.cccpharma.app.util.ProductStatus;
 
@@ -19,6 +21,9 @@ public class ProductService {
 	@Autowired
 	private ProductRepository productRepository;
 	
+	@Autowired
+	private DiscountService discountService;
+	
 	
 	public List<Product> getAllProducts() {
 		List<Product> productList = new ArrayList<>();
@@ -26,6 +31,7 @@ public class ProductService {
 		
 		for (Product product : productsData) {
 			product.setStockData();
+			product.setDiscount(getProductDiscountCategory(product));
 			productList.add(product);
 		}
 		
@@ -37,12 +43,17 @@ public class ProductService {
 		if (productData.isPresent()) {
 			Product product = productData.get();
 			product.setStockData();
+			product.setDiscount(getProductDiscountCategory(product));
 			return product;
 		} else {
 			return null;
 		}
 	}
 	
+	public DiscountCategory getProductDiscountCategory(Product product) {
+		return discountService.getDiscountCategoryById(product.getCategory());
+		
+	}
 	public List<Product> getProductsByCategory(ProductCategory category) {
 		List<Product> productList = new ArrayList<>();
 		Iterable<Product> products = productRepository.findByCategory(category);

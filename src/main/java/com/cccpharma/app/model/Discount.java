@@ -26,6 +26,13 @@ public class Discount implements Serializable {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "product_category")
 	private ProductCategory productCategory;
+	
+	public Discount() {}
+	
+	public Discount(ProductCategory productCategory, DiscountCategory discountCategory) {
+		this.discountCategory = discountCategory;
+		this.productCategory = productCategory;
+	}
 
 	public DiscountCategory getDiscountCategory() {
 		return discountCategory;

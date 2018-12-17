@@ -11,9 +11,15 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.cccpharma.app.repository.DiscountRepository;
+import com.cccpharma.app.service.DiscountService;
+import com.cccpharma.app.util.DiscountCategory;
 import com.cccpharma.app.util.ProductCategory;
 import com.cccpharma.app.util.ProductStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -55,6 +61,8 @@ public class Product implements Serializable {
 	
 	private Integer expiredStock;
 	
+	private DiscountCategory discount = DiscountCategory.NO;
+	
 	public long getId() {
 		return id;
 	}
@@ -88,6 +96,23 @@ public class Product implements Serializable {
 		}
 	}
 
+	public double getListingPrice() {
+		return getPrice();
+	}
+	
+	public DiscountCategory getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(DiscountCategory discount) {
+		this.discount = discount;
+	}
+
+	public double getSellingPrice() {
+		return getPrice() - getPrice()*discount.getDiscount();
+	}
+	
+	
 	public String getName() {
 		return name;
 	}
@@ -145,7 +170,6 @@ public class Product implements Serializable {
 	public void setPrice(double price) {
 		this.price = price;
 	}
-
 	@Override
 	public String toString() {
 		return "Product [id=" + id + ", name=" + name + ", barCode=" + barCode + ", manufacturer=" + manufacturer

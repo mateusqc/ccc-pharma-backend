@@ -9,4 +9,5 @@ import com.cccpharma.app.util.ProductCategory;
 
 @Repository
 public interface DiscountRepository extends CrudRepository<Discount, ProductCategory>{
+	
 }
