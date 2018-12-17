@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cccpharma.app.model.Discount;
-import com.cccpharma.app.model.Product;
 import com.cccpharma.app.service.DiscountService;
 import com.cccpharma.app.util.DiscountCategory;
 import com.cccpharma.app.util.ProductCategory;

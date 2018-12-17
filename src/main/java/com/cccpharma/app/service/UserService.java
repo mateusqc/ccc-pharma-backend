@@ -7,7 +7,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.cccpharma.app.model.Product;
 import com.cccpharma.app.model.User;
 import com.cccpharma.app.repository.UserRepository;
 import com.cccpharma.app.util.UserRole;

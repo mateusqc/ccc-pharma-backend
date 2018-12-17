@@ -11,14 +11,9 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.cccpharma.app.repository.DiscountRepository;
-import com.cccpharma.app.service.DiscountService;
 import com.cccpharma.app.util.DiscountCategory;
 import com.cccpharma.app.util.ProductCategory;
 import com.cccpharma.app.util.ProductStatus;

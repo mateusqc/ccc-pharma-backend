@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cccpharma.app.model.Product;
 import com.cccpharma.app.service.ProductService;
 import com.cccpharma.app.util.ProductCategory;
-import com.cccpharma.app.util.ProductStatus;
 
 @RestController
 //@RequestMapping("/api")

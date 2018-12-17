@@ -8,11 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cccpharma.app.model.Discount;
-import com.cccpharma.app.model.Product;
 import com.cccpharma.app.repository.DiscountRepository;
 import com.cccpharma.app.util.DiscountCategory;
 import com.cccpharma.app.util.ProductCategory;
-import com.cccpharma.app.util.ProductStatus;
 
 @Service
 public class DiscountService {
