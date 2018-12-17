@@ -1,5 +1,6 @@
 package com.cccpharma.app.controller;
 
+import java.util.Collection;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,12 +28,22 @@ import com.cccpharma.app.service.UserService;
 public class UserController {
 	@Autowired
 	private UserService userService;
-	
+
 	@GetMapping(value = "/user/loggedUser")
     @ResponseBody
     public String currentUserName(Authentication authentication) {
         if (authentication != null) {
             return authentication.getName();
+        } else {
+            return "";
+        }
+    }
+
+	@GetMapping(value = "/user/loggedUser/authorities")
+    @ResponseBody
+    public String currentUserAuthorities(Authentication authentication) {
+        if (authentication != null) {
+            return userService.getUserByEmail(authentication.getName()).getRole().getUserRole();
         } else {
             return "";
         }
