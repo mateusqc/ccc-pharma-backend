@@ -24,7 +24,7 @@ import com.cccpharma.app.model.User;
 import com.cccpharma.app.service.UserService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "https://cccpharma.herokuapp.com")
 public class UserController {
 	@Autowired
 	private UserService userService;
