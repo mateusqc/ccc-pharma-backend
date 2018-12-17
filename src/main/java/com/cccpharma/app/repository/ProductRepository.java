@@ -14,4 +14,7 @@ import com.cccpharma.app.util.ProductCategory;
 public interface ProductRepository extends CrudRepository<Product, Long>{
 	@Query("SELECT p FROM Product p WHERE p.category = :category")
 	public List<Product> findByCategory(@Param("category") ProductCategory category);
+	
+	@Query("SELECT p FROM Product p WHERE bar_code = :barcode")
+	public Product findByBarCode(@Param("barcode") String barCode);
 }

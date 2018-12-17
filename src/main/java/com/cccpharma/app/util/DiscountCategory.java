@@ -22,8 +22,7 @@ public enum DiscountCategory {
 			case SUPER:	return 0.5;
 			case GREAT: return 0.25;
 			case GOOD: 	return 0.1;
-			case NO:	return 0;
-			default: 	return 0.2;
+			default:	return 0;
 		}
 	}
 	
