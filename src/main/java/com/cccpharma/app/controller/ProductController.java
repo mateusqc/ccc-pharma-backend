@@ -78,11 +78,10 @@ public class ProductController {
 	}
 	
 	@PutMapping("/products/{id}")
-	public ResponseEntity<Product> updateProduct(@PathVariable("id") Long id, @RequestParam(value = "name") String name,
-	@RequestParam(value = "manufacturer") String manufacturer, @RequestParam("price") double price) {
+	public ResponseEntity<Product> updateProduct(@PathVariable("id") Long id, @RequestBody Product product) {
 		System.out.println("UPDATING PRODUCT " + id + "...");
 				
-		Product updatedProduct = productService.update(id, name, manufacturer, price);
+		Product updatedProduct = productService.update(id, product);
 		if(updatedProduct != null) {
 			return new ResponseEntity<Product>(updatedProduct, HttpStatus.OK);
 		} else {
