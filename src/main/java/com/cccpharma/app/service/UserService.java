@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.cccpharma.app.model.Product;
 import com.cccpharma.app.model.User;
 import com.cccpharma.app.repository.UserRepository;
+import com.cccpharma.app.util.UserRole;
 
 @Service
 public class UserService {
@@ -60,5 +61,9 @@ public class UserService {
 		} catch (Exception e) {
 			return false;
 		}
+	}
+	
+	public List<User> getUserByRole(UserRole role) {
+		return userRepository.findByRole(role);
 	}
 }

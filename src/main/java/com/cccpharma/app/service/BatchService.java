@@ -47,7 +47,7 @@ public class BatchService {
 			Batch batch = new Batch();
 			Date expirationDate;			
 			try {
-				expirationDate = new SimpleDateFormat("dd-MM-yyyy").parse(dateString);
+				expirationDate = new SimpleDateFormat("yyyy-MM-dd").parse(dateString);
 			} catch (ParseException e) {
 				expirationDate = new Date();
 				e.printStackTrace();
@@ -93,7 +93,7 @@ public class BatchService {
 				if (!dateString.trim().equals("")) {
 					Date expirationDate;
 					try {
-						expirationDate = new SimpleDateFormat("dd-MM-yyyy").parse(dateString);
+						expirationDate = new SimpleDateFormat("yyyy-MM-dd").parse(dateString);
 					} catch (ParseException e) {
 						expirationDate = new Date();
 						e.printStackTrace();
