@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cccpharma.app.model.Product;
 import com.cccpharma.app.service.ProductService;
 import com.cccpharma.app.util.ProductCategory;
+import com.cccpharma.app.util.ProductStatus;
 
 @RestController
 //@RequestMapping("/api")
@@ -93,5 +94,15 @@ public class ProductController {
 		}
 	}
 	
+	@GetMapping("/products/unavailable")
+	public List<Product> getUnavailableProducts() {
+		System.out.println("GET ALL UNAVAILABLE PRODUCTS...");
+		return productService.getUnavailableProducts();
+	}
 	
+	@GetMapping("/products/lowStock")
+	public List<Product> getLowStockProducts() {
+		System.out.println("GET ALL LOW STOCK PRODUCTS...");
+		return productService.getLowStockProducts();
+	}
 }
