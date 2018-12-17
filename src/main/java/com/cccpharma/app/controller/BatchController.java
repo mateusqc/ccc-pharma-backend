@@ -51,6 +51,18 @@ public class BatchController {
 				new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 	
+	@GetMapping("/batches/product/{id}")
+	public ResponseEntity<List<Batch>> updateBatch(@PathVariable("id") Long id) {
+		System.out.println("GET BATCHES OF PRODUCT " + id + "...");
+		
+		List<Batch> batchList = batchService.getBatchesByProductId(id);
+		if(batchList != null) {
+			return new ResponseEntity<List<Batch>>(batchList, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+	
 	@PutMapping("/batches/{id}")
 	public ResponseEntity<Batch> updateBatch(@PathVariable("id") Long id, @RequestParam(value="quantity") Integer quantity,
 			@RequestParam(value="expirationDate") String expirationDate) {

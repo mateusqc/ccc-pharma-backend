@@ -64,6 +64,30 @@ public class ProductService {
 		}
 		return productList;
 	}
+	
+	public List<Product> getUnavailableProducts() {
+		List<Product> productList = new ArrayList<>();
+		Iterable<Product> productsData = productRepository.findAll();
+		for (Product product : productsData) {
+			product.setStockData();
+			if (product.getStatus().equals(ProductStatus.UNAVAILABLE)) {
+				productList.add(product);
+			}
+		}
+		return productList;
+	}
+	
+	public List<Product> getLowStockProducts() {
+		List<Product> productList = new ArrayList<>();
+		Iterable<Product> productsData = productRepository.findAll();
+		for (Product product : productsData) {
+			product.setStockData();
+			if (product.getStock() < 15) {
+				productList.add(product);
+			}
+		}
+		return productList;
+	}
 
 	public Integer[] getProductStock(Long id) {
 		Product product = getProductById(id);
